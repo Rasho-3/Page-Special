@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Juego de Verdadero o Falso con Cronómetro</title>
+  <style>
+    /* ----------- FONDO NEGRO NEÓN ANIMADO ----------- */
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #050711;
+      /* Fondo base negro profundo */
+      background-image:
+        /* halos neón azul y violeta en las esquinas y bordes */
+        radial-gradient(circle at 10% 10%, #3ffff7cc 0 13%, transparent 60%),
+        radial-gradient(circle at 90% 90%, #723affbb 0 18%, transparent 60%),
+        radial-gradient(circle at 80% 20%, #4e7cff99 0 10%, transparent 60%),
+        radial-gradient(circle at 20% 80%, #4300c277 0 12%, transparent 60%),
+        linear-gradient(120deg, #080c1c 0 55%, #0c0d1c 100%);
+      background-size: cover;
+      background-repeat: no-repeat;
+      color: #e9faff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 10px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* --- ANIMACIONES DE RESPLANDORES NEÓN ALREDEDOR DEL BODY --- */
+    .neon-border {
+      pointer-events: none;
+      position: fixed;
+      z-index: 0;
+      border-radius: 40%;
+      top: -10%;
+      left: -13%;
+      width: 140vw;
+      height: 120vh;
+      box-shadow:
+        0 0 80px 20px #28fff977,
+        0 0 160px 50px #20e2f9cc,
+        0 0 280px 120px #7300fd33;
+      opacity: 0.48;
+      filter: blur(8px) brightness(1.2) saturate(1.13);
+      animation: rotar-neon 18s linear infinite alternate;
+    }
+    @keyframes rotar-neon {
+      0% { transform: rotate(0deg) scale(1);}
+      48% { opacity: 0.35;}
+      75% { transform: rotate(11deg) scale(1.07);}
+      100% { transform: rotate(-16deg) scale(0.97); opacity: 0.57;}
+    }
+
+    /* ----------- PARTÍCULAS/DESTELLOS ANIMADOS ---------- */
+    .neon-dot {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.72;
+      pointer-events: none;
+      z-index: 1;
+      filter: blur(1.4px);
+      animation: dot-move 12s infinite linear alternate;
+    }
+    .dot1 { width: 16px; height: 16px; top: 11vh; left: 9vw; background: #19e6ff; animation-delay: 0s;}
+    .dot2 { width: 12px; height: 12px; top: 21vh; left: 85vw; background: #e500ff; animation-delay: 3.1s;}
+    .dot3 { width: 10px; height: 10px; top: 74vh; left: 22vw; background: #00ffe1; animation-delay: 7.7s;}
+    .dot4 { width: 9px; height: 9px;  top: 82vh; left: 72vw; background: #544aff; animation-delay: 1.5s;}
+    .dot5 { width: 14px; height: 14px; top: 50vh; left: 13vw; background: #f3f3ff; animation-delay: 4.6s;}
+    @keyframes dot-move {
+      0%   { opacity: 0.39; transform: translateY(0) scale(1);}
+      48%  { opacity: 1;   transform: translateY(-30px) scale(1.2);}
+      100% { opacity: 0.65; transform: translateY(-20px) scale(1.05);}
+    }
+
+    /* ---- CONTENIDO JUEGO Y ESTILO NEÓN ---- */
+    h1 {
+      color: #35fff6;
+      font-weight: 900;
+      font-size: 2.8rem;
+      margin-bottom: 24px;
+      text-shadow:
+        0 0 20px #37fffde7,
+        0 0 35px #ac6fffcc;
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 2;
+    }
+
+    #contenedor {
+      background: rgba(18,21,42,0.59);
+      backdrop-filter: blur(12px) saturate(1.2);
+      border-radius: 28px;
+      box-shadow: 0 0 38px #38fff87d inset, 0 10px 36px #4600f999;
+      padding: 34px 44px;
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      min-height: 420px;
+      color: #f3fbff;
+      border: 2px solid #43fffa8a;
+      user-select: none;
+    }
+
+    #pregunta {
+      font-size: 1.35em;
+      margin-bottom: 29px;
+      min-height: 70px;
+      color: #aef4fa;
+      text-shadow: 0 0 12px #38fffac6;
+      letter-spacing: 0.02em;
+      z-index: 2;
+    }
+
+    .boton {
+      background: linear-gradient(90deg, #24fff1 0%, #4447ff 80%, #ff86fd 100%);
+      border: 2.8px solid #2ffffeaa;
+      border-radius: 22px;
+      color: #111;
+      cursor: pointer;
+      font-size: 1.18em;
+      font-weight: 900;
+      padding: 16px 49px;
+      margin: 0 19px 0 19px;
+      box-shadow:
+        0 0 24px #31effcbb, 0 0 61px #2a0fcbaa,
+        0 0 0px 2px #9ffff6 inset;
+      transition: background 0.24s, box-shadow 0.30s, transform 0.19s;
+      animation: glowBoton 1.2s infinite alternate;
+      outline: none;
+    }
+    .boton:hover:not(:disabled),
+    .boton:focus:not(:disabled) {
+      background: linear-gradient(90deg, #e6eeff 0%, #00faf9 90%, #e9c6ff 100%);
+      box-shadow:
+        0 0 42px #00fcffcc,
+        inset 0 0 24px #5dfffecc,
+        0 0 22px 4px #fa44ffd8;
+      transform: scale(1.1);
+      outline: none;
+    }
+    .boton:disabled {
+      cursor: default;
+      opacity: 0.6;
+      box-shadow: none;
+      animation: none;
+    }
+    @keyframes glowBoton {
+      0%   { box-shadow: 0 0 20px #3ee2ff99, 0 0 50px #0fffd6df, 0 0 0px 2px #9ffff6 inset;}
+      100% { box-shadow: 0 0 45px #b01af9f2, 0 0 71px #05ffe7d7, 0 0 6px 5px #6afaeef4 inset;}
+    }
+
+    #botonesContenedor {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    #resultado {
+      font-weight: 900;
+      font-size: 1.23em;
+      min-height: 36px;
+      margin-top: 30px;
+      transition: color 0.33s;
+      letter-spacing: 0.04em;
+      z-index: 2;
+      position: relative;
+    }
+
+    #puntaje {
+      font-size: 1.09em;
+      color: #55e7ff;
+      font-weight: 700;
+      margin-top: 17px;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 8px #38fffba1;
+      z-index: 2;
+      position: relative;
+    }
+
+    #cronometro {
+      font-weight: 900;
+      font-size: 1.2em;
+      color: #43fff7;
+      margin-top: auto;
+      padding-top: 24px;
+      border-top: 1.6px solid #43fff77a;
+      text-align: center;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 14px #0fffd8c4;
+      z-index: 2;
+      position: relative;
+    }
+
+    #botonSiguiente {
+      margin-top: 26px;
+      background-color: #3206a9;
+      padding: 13px 34px;
+      border-radius: 20px;
+      font-size: 1.15em;
+      color: white;
+      border: 2px solid #89f8ffbb;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 0 32px #68f0ff99;
+      display: none;
+      align-self: center;
+      transition: background-color 0.28s, box-shadow 0.38s;
+      font-weight: 900;
+      outline: none;
+      z-index: 2;
+    }
+    #botonSiguiente:hover {
+      background-color: #1de0f5;
+      box-shadow: 0 0 55px #2df7dbcc;
+    }
+
+    #mensajeFinalEspecial {
+      margin-top: 39px;
+      font-size: 1.3em;
+      font-weight: 900;
+      color: #64e9ff;
+      text-align: center;
+      min-height: 60px;
+      text-shadow:
+        0 0 17px #13b9ffbb,
+        0 0 33px #94ffeccc;
+      position: relative;
+      z-index: 2;
+      letter-spacing: 0.01em;
+    }
+    #mensajeFinalEspecial span {
+      display: inline-block;
+      color: #fc3bff;
+      font-size: 2em;
+      animation: heartbeat 1.18s infinite cubic-bezier(0.26, 0.71, 0.22, 1.01);
+      margin-left: 8px;
+      text-shadow:
+        0 0 19px #fd4ffdcc,
+        0 0 28px #f79cff99;
+      vertical-align: middle;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.2);}
+      40% { transform: scale(1); }
+      60% { transform: scale(1.07);}
+      80% { transform: scale(1);}
+    }
+    /* Scrollbar personalizado */
+    #contenedor::-webkit-scrollbar {
+      width: 9px;
+    }
+    #contenedor::-webkit-scrollbar-thumb {
+      background-color: #39f5ffdd;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Efecto halo negro neón animado envolviendo -->
+  <div class="neon-border"></div>
+  <!-- Nebulosas y destellos/partículas -->
+  <div class="neon-dot dot1"></div>
+  <div class="neon-dot dot2"></div>
+  <div class="neon-dot dot3"></div>
+  <div class="neon-dot dot4"></div>
+  <div class="neon-dot dot5"></div>
+
+  <h1>Juego de Verdadero o Falso</h1>
+  <div id="contenedor" role="main" aria-label="Juego de Verdadero o Falso">
+    <div id="pregunta" aria-live="polite" aria-atomic="true">Cargando pregunta...</div>
+    <div id="botonesContenedor" role="group" aria-label="Opciones de respuesta">
+      <button id="botonVerdadero" class="boton" aria-pressed="false">Verdadero</button>
+      <button id="botonFalso" class="boton" aria-pressed="false">Falso</button>
+    </div>
+    <div id="resultado" aria-live="polite" aria-atomic="true"></div>
+    <div id="puntaje" aria-live="polite" aria-atomic="true">Puntaje: 0 / 0</div>
+    <button id="botonSiguiente" aria-label="Siguiente pregunta">Siguiente Pregunta</button>
+    <div id="mensajeFinalEspecial" aria-live="polite" aria-atomic="true"></div>
+    <div id="cronometro" aria-live="polite" aria-atomic="true">Tiempo: 10s</div>
+  </div>
+
+<script>
+  // Preguntas para el juego
+  const preguntas = [
+    { texto: "¿Es cierto que una sonrisa suya puede alegrarme todo el día?", respuesta: true },
+    { texto: "¿Dice que no se le olvidan las cosas?", respuesta: false },
+    { texto: "¿Me emociono al verla pequeña?", respuesta: true },
+    { texto: "¿Es verdad que somos un caso?", respuesta: true },
+    { texto: "¿Le gusta morderme?", respuesta: true },
+    { texto: "¿Mi apodo para ud es 'Berrinchuda' porque nunca hace berrinche?", respuesta: false },
+    { texto: "¿Ha pensado alguna vez que las estrellas del cielo son menos brillantes que su sonrisa?", respuesta: true },
+    { texto: "¿Alguna vez hemos platicado tanto que nos dieron las 3 de la mañana?", respuesta: true },
+    { texto: "¿Siempre le gano en los juegos (por suerte o porque me deja)?", respuesta: false },
+    { texto: "¿Es verdad que le he llegado a llamar muchas veces?", respuesta: true },
+    { texto: "¿Es verdad que se ha quedado dormida en llamada?", respuesta: true },
+    { texto: "¿Soy dramático?", respuesta: true },
+    { texto: "¿Ud es dramática?", respuesta: true },
+    { texto: "¿Es ud mi princesa?", respuesta: true }
+  ];
+
+  let indiceActual = 0;
+  let preguntasRespondidas = 0;
+  let respuestasCorrectas = 0;
+  let tiempoRestante = 10;
+  let intervaloTiempo;
+
+  const preguntaDiv = document.getElementById('pregunta');
+  const botonVerdadero = document.getElementById('botonVerdadero');
+  const botonFalso = document.getElementById('botonFalso');
+  const resultadoDiv = document.getElementById('resultado');
+  const puntajeDiv = document.getElementById('puntaje');
+  const botonSiguiente = document.getElementById('botonSiguiente');
+  const cronometroDiv = document.getElementById('cronometro');
+  const mensajeFinalEspecialDiv = document.getElementById('mensajeFinalEspecial');
+
+  // Comienza el temporizador
+  function iniciarCronometro() {
+    tiempoRestante = 10;
+    cronometroDiv.textContent = `Tiempo: ${tiempoRestante}s`;
+    intervaloTiempo = setInterval(() => {
+      tiempoRestante--;
+      cronometroDiv.textContent = `Tiempo: ${tiempoRestante}s`;
+      if (tiempoRestante <= 0) {
+        clearInterval(intervaloTiempo);
+        manejarRespuesta(null); // tiempo agotado, sin respuesta
+      }
+    }, 1000);
+  }
+
+  // Mostrar la pregunta actual y resetear estado
+  function mostrarPregunta() {
+    mensajeFinalEspecialDiv.textContent = "";
+    const actual = preguntas[indiceActual];
+    preguntaDiv.textContent = actual.texto;
+    resultadoDiv.textContent = "";
+    botonVerdadero.disabled = false;
+    botonFalso.disabled = false;
+    botonVerdadero.setAttribute('aria-pressed', 'false');
+    botonFalso.setAttribute('aria-pressed', 'false');
+    botonSiguiente.style.display = "none";
+    iniciarCronometro();
+  }
+
+  // Manejar respuesta usuario
+  function manejarRespuesta(respuestaUsuario) {
+    clearInterval(intervaloTiempo);
+    botonVerdadero.disabled = true;
+    botonFalso.disabled = true;
+
+    preguntasRespondidas++;
+
+    const correcta = preguntas[indiceActual].respuesta;
+    let textoResultado;
+    if (respuestaUsuario === correcta) {
+      respuestasCorrectas++;
+      textoResultado = "¡Correcto! 🎉";
+      resultadoDiv.style.color = "#32cd32"; // verde
+    } else if (respuestaUsuario === null) {
+      textoResultado = "Se acabó el tiempo ⏰. Incorrecto. 😞";
+      resultadoDiv.style.color = "#ff4c4c"; // rojo
+    } else {
+      textoResultado = "Incorrecto. 😞";
+      resultadoDiv.style.color = "#ff4c4c"; // rojo
+    }
+    resultadoDiv.textContent = textoResultado;
+
+    actualizarPuntaje();
+    botonSiguiente.style.display = "inline-block";
+  }
+
+  // Actualizar puntaje en pantalla
+  function actualizarPuntaje() {
+    puntajeDiv.textContent = `Puntaje: ${respuestasCorrectas} / ${preguntasRespondidas}`;
+  }
+
+  // Pasar a siguiente pregunta o finalizar juego
+  function siguientePregunta() {
+    indiceActual++;
+    if (indiceActual >= preguntas.length) {
+      preguntaDiv.textContent = "¡Juego terminado! 🎊";
+      resultadoDiv.textContent = ``;
+      botonVerdadero.style.display = "none";
+      botonFalso.style.display = "none";
+      botonSiguiente.style.display = "none";
+      cronometroDiv.style.display = "none";
+
+      // Mensaje final especial con corazón rojo y animación
+      mensajeFinalEspecialDiv.innerHTML = `¡Gracias por jugar señorita! Su puntaje final es <strong>${respuestasCorrectas}</strong> de <strong>${preguntasRespondidas}</strong>.<br>Espero le haya gustado, ATT: Con mucho cariño <span>❤</span>`;
+      return;
+    }
+    mostrarPregunta();
+  }
+
+  // Eventos botones
+  botonVerdadero.addEventListener('click', () => {
+    botonVerdadero.setAttribute('aria-pressed', 'true');
+    manejarRespuesta(true);
+  });
+  botonFalso.addEventListener('click', () => {
+    botonFalso.setAttribute('aria-pressed', 'true');
+    manejarRespuesta(false);
+  });
+  botonSiguiente.addEventListener('click', siguientePregunta);
+
+  // Iniciar juego mostrando primera pregunta
+  mostrarPregunta();
+  actualizarPuntaje();
+
+</script>
+
+</body>
+</html>

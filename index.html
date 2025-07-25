@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Para una persona especial</title>
+  <link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+  <h1>Una página especial</h1>
+  <form id="specialForm" novalidate>
+    <label for="name">Nombre</label>
+    <input type="text" id="name" name="name" placeholder="Tu nombre aquí" required />
+    <div id="nameError" class="error" style="display:none;">Por favor, ingrese el nombre.</div>
+
+    <label for="age">Edad</label>
+    <input type="number" id="age" name="age" placeholder="Tu edad" min="1" max="120" required />
+    <div id="ageError" class="error" style="display:none;">Por favor, ingrese una edad válida.</div>
+
+    <label for="placeMet">Qué año nos conocimos?</label>
+    <input type="text" id="placeMet" name="placeMet" placeholder="Año que nos conocimos" required />
+    <div id="placeMetError" class="error" style="display:none;">Por favor, ingrese qué año nos conocimos.</div>
+
+    <label for="whereStarted">¿Dónde comenzó todo?</label>
+    <input type="text" id="whereStarted" name="whereStarted" placeholder="Lugar donde comenzó todo" required />
+    <div id="whereStartedError" class="error" style="display:none;">Por favor, ingrese dónde comenzó todo.</div>
+
+    <button type="submit">Entrar</button>
+  </form>
+  <script src="script.js"></script>
+</body>
+</html>

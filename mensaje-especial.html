@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="stylesheet" href="style.css" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Animación Conejo Letras + Pregunta y Confeti</title>
+<style>
+  body {
+    background: #fdf6f0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    margin: 0; padding: 40px 20px 80px 20px;
+    color: #6b3e1f;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  #overlay-advertencia {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  #advertencia {
+    background: #fff7e6;
+    border: 3px solid #e1b56f;
+    border-radius: 20px;
+    padding: 25px 40px;
+    max-width: 360px;
+    font-size: 1.3em;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 0 20px #e1b56fcc;
+    color: #6b3e1f;
+  }
+  #btn-advertencia {
+    margin-top: 20px;
+    padding: 10px 28px;
+    font-weight: 700;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 15px;
+    background: #ffd8a6;
+    cursor: pointer;
+    box-shadow: 2px 3px 6px rgba(169,121,42,0.5);
+    user-select: none;
+    color: #6b3e1f;
+    transition: background-color 0.3s ease;
+  }
+  #btn-advertencia:hover {
+    background-color: #ffbb61;
+  }
+  #frase {
+    font-size: 2.8em;
+    font-weight: bold;
+    margin-bottom: 30px; /* Menos margen para que la pregunta quede más cerca */
+    min-height: 64px;
+    letter-spacing: 4px;
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    position: relative;
+    transition: color 0.5s;
+    user-select: none;
+    max-width: 90vw;
+    text-align: center;
+    flex-wrap: wrap;
+  }
+  .letra {
+    position: relative;
+    min-width: 20px;
+    height: 64px;
+    color: transparent;
+    font-weight: 900;
+    transition: color 0.4s ease;
+  }
+  .letra.visible {
+    color: #6b3e1f;
+  }
+  .letra.final {
+    color: #d35400;
+    text-shadow: 0 2px 6px #ffdbae;
+  }
+  #conejo-container {
+    position: fixed;
+    bottom: 160px; /* Subí mucho más al conejo para que quede cerca de la frase */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    user-select: none;
+    z-index: 600;
+    display: none;
+    transition: opacity 0.4s;
+  }
+  #conejo {
+    font-size: 110px;
+    filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.15));
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: transform 0.7s ease;
+    will-change: transform;
+    user-select: none;
+  }
+  #letra-transportada {
+    position: absolute;
+    font-size: 2.8em;
+    font-weight: 900;
+    user-select: none;
+    pointer-events: none;
+    color: #6b3e1f;
+    transition: transform 0.7s cubic-bezier(0.65,0.05,0.36,1), opacity 0.4s;
+    user-select: none;
+  }
+  #letrero {
+    margin: 8px auto 0 auto;
+    background: #ffecd1;
+    border: 3px solid #e1b56f;
+    border-radius: 28px;
+    padding: 14px 36px;
+    font-size: 1.5em;
+    font-weight: 600;
+    box-shadow: 3px 3px 9px rgba(196,160,105,0.5);
+    max-width: 360px;
+    letter-spacing: 1.5px;
+    user-select: none;
+    text-align: center;
+    width: fit-content;
+  }
+  #botones {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 14px; /* Menos margen para acercar más */
+    user-select: none;
+  }
+  button {
+    font-size: 1.3em;
+    padding: 16px 46px;
+    border-radius: 28px;
+    border: 3px solid #b2713d;
+    background: #ffd8a6;
+    color: #6b3e1f;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 2px 3px 6px rgba(169,121,42,0.5);
+    user-select: none;
+    position: relative;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    user-select: none;
+  }
+  button:hover {
+    background-color: #ffbb61;
+  }
+  #btn-no {
+    position: relative;
+  }
+  #mensaje-alegre {
+    font-size: 1.6em;
+    margin-top: 48px;
+    color: #d35400;
+    font-weight: 900;
+    user-select: none;
+    animation: fadeIn 1s ease forwards;
+    text-align: center;
+  }
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  /* Confeti container and pieces */
+  #confeti-container {
+    pointer-events: none;
+    position: fixed;
+    top: 0; left: 0; right:0; bottom: 0;
+    overflow: visible;
+    z-index: 1500;
+  }
+  .confeti-piece {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    opacity: 0.9;
+    border-radius: 3px;
+    transform-origin: center center;
+    animation-name: confeti-fall;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+  }
+  @keyframes confeti-fall {
+    0% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(400px) rotate(360deg) scale(0.5);
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Advertencia previa -->
+<div id="overlay-advertencia">
+  <div id="advertencia">
+    <div>Al aceptar, tendrá que responder la pregunta secreta que la espera.</div>
+    <button id="btn-advertencia">Entendido, adelante</button>
+  </div>
+</div>
+
+<!-- Frase donde se colocan letras -->
+<div id="frase"></div>
+
+<!-- Conejo y letra transportada -->
+<div id="conejo-container">
+  <div id="conejo">🐰</div>
+  <div id="letra-transportada"></div>
+  <div id="letrero" style="display:none;">Quiere ser mi novia pequeña?</div>
+  <div id="botones" style="display:none;">
+    <button id="btn-si">Sí</button>
+    <button id="btn-no">No</button>
+  </div>
+</div>
+
+<!-- Mensaje final -->
+<div id="mensaje-alegre" style="display:none;">¡Me hace muy feliz, princesa! 🎉💖</div>
+
+<!-- Contenedor confeti -->
+<div id="confeti-container"></div>
+
+<script>
+  // Texto completo en mayúsculas para animación
+  const fraseAnimada = "LA QUIERO MUCHÍSIMO PRINCESA";
+  const fraseDiv = document.getElementById('frase');
+  const conejoContainer = document.getElementById('conejo-container');
+  const conejo = document.getElementById('conejo');
+  const letraTransportada = document.getElementById('letra-transportada');
+  const btnNo = document.getElementById('btn-no');
+  const btnSi = document.getElementById('btn-si');
+  const mensajeAlegre = document.getElementById('mensaje-alegre');
+  const overlayAdvertencia = document.getElementById('overlay-advertencia');
+  const btnAdvertencia = document.getElementById('btn-advertencia');
+  const letrero = document.getElementById('letrero');
+  const botonesDiv = document.getElementById('botones');
+  const confetiContainer = document.getElementById('confeti-container');
+
+  let letraIndex = 0;
+  const letrasSpans = [];
+
+  // Crear spans para la frase animada
+  function crearSpans(frase) {
+    fraseDiv.innerHTML = '';
+    letrasSpans.length = 0;
+    for(let i = 0; i < frase.length; i++) {
+      const span = document.createElement('span');
+      span.classList.add('letra');
+      fraseDiv.appendChild(span);
+      letrasSpans.push(span);
+    }
+  }
+  crearSpans(fraseAnimada);
+
+  // Animación de conejo trayendo cada letra
+  async function animarLetra(letra) {
+    const letraSpan = letrasSpans[letraIndex];
+    if (!letraSpan) return;
+
+    const frPos = fraseDiv.getBoundingClientRect();
+    const letraPos = letraSpan.getBoundingClientRect();
+    const destinoX = letraPos.left - frPos.left + letraPos.width / 2;
+    const destinoY = frPos.height / 2;
+
+    await moverConejoASobreLetra(destinoX);
+
+    letraTransportada.textContent = letra;
+    letraTransportada.style.opacity = "1";
+    letraTransportada.style.left = '50%';
+    letraTransportada.style.bottom = '120px';
+    letraTransportada.style.transform = 'translate(0, 0)';
+
+    await moverLetraATexto(destinoX, destinoY);
+
+    letraTransportada.style.opacity = "0";
+    letraSpan.classList.add('visible');
+
+    await moverConejoAlSuelo();
+  }
+
+  function moverConejoASobreLetra(destinoX) {
+    return new Promise(resolve => {
+      conejo.style.transition = 'transform 0.6s cubic-bezier(0.82,0,0.18,1)';
+      conejo.style.transform = `translate(${destinoX - 160}px, -120px) rotate(-8deg)`;
+      setTimeout(resolve, 650);
+    });
+  }
+
+  function moverLetraATexto(destX, destY) {
+    return new Promise(resolve => {
+      letraTransportada.style.transition = 'transform 0.7s cubic-bezier(0.82,0,0.18,1), opacity 0.5s ease';
+      letraTransportada.style.transform = `translate(${destX-50}px, ${destY-120}px)`;
+      setTimeout(resolve, 720);
+    });
+  }
+
+  function moverConejoAlSuelo() {
+    return new Promise(resolve => {
+      conejo.style.transition = 'transform 0.5s cubic-bezier(0.82,0,0.18,1)';
+      conejo.style.transform = `translate(0,0) rotate(0deg)`;
+      setTimeout(resolve, 500);
+    });
+  }
+
+  async function escribirFraseCompleta() {
+    conejoContainer.style.display = 'block';
+    letraIndex = 0;
+    for(let i=0; i<fraseAnimada.length; i++) {
+      await animarLetra(fraseAnimada[i]);
+      letraIndex++;
+    }
+    setTimeout(() => {
+      conejoContainer.style.opacity = '0';
+
+      crearSpans(fraseAnimada);
+      fraseDiv.style.color = "#d35400";
+      fraseDiv.style.textShadow = "0 2px 6px #ffdbae";
+
+      for (let i=0; i < fraseAnimada.length; i++) {
+        letrasSpans[i].textContent = fraseAnimada[i];
+        letrasSpans[i].classList.add('final');
+      }
+
+      setTimeout(() => {
+        letrero.style.display = 'block';
+        botonesDiv.style.display = 'flex';
+        conejoContainer.style.display = 'block';
+        conejoContainer.style.opacity = '1';
+
+        // Ajustar posición del conejo para que quede un poco más arriba cuando aparezca la pregunta
+        conejoContainer.style.bottom = '120px';
+      }, 700);
+    }, 600);
+  }
+
+  // Evento táctil para que el botón NO se mueva en móviles
+  btnNo.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    moverBotonNo();
+  });
+
+  // Botón NO se mueve mucho y no se deja apachar
+  function moverBotonNo() {
+    if (!btnNo.classList.contains('mover')) {
+      btnNo.classList.add('mover');
+      const randomX = (Math.random() - 0.5)*200;
+      const randomY = (Math.random() - 0.5)*150;
+      const randomRot = (Math.random() - 0.5)*40;
+      btnNo.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRot}deg)`;
+      setTimeout(() => {
+        btnNo.style.transform = 'translate(0,0) rotate(0deg)';
+        btnNo.classList.remove('mover');
+      }, 550);
+    }
+  }
+  btnNo.addEventListener('mouseenter', moverBotonNo);
+  btnNo.addEventListener('click', (e) => {
+    e.preventDefault();
+    moverBotonNo();
+  });
+
+  // Botón SI muestra mensaje alegre y lanza animación confeti
+  btnSi.addEventListener('click', () => {
+    letrero.style.display = 'none';
+    botonesDiv.style.display = 'none';
+    mensajeAlegre.style.display = 'block';
+    conejoContainer.style.display = 'none';
+    fraseDiv.style.marginBottom = '20px';
+    fraseDiv.style.color = '#d35400';
+    lanzarConfeti(40);
+  });
+
+  // Lanzar animación confeti
+  function lanzarConfeti(cantidad) {
+    for(let i=0; i < cantidad; i++) {
+      const confeti = document.createElement('div');
+      confeti.classList.add('confeti-piece');
+      confeti.style.left = (window.innerWidth/2 + Math.random()*200 - 100) + 'px';
+      confeti.style.top = (window.innerHeight - 100) + 'px';
+      confeti.style.backgroundColor = `hsl(${Math.random()*360}, 80%, 70%)`;
+      confeti.style.animationDuration = (1 + Math.random()*1.5) + 's';
+      confeti.style.animationDelay = (i*30) + 'ms';
+      confetiContainer.appendChild(confeti);
+
+      confeti.addEventListener('animationend', () => {
+        confeti.remove();
+      });
+    }
+  }
+
+  // Control de advertencia inicial
+  btnAdvertencia.addEventListener('click', () => {
+    overlayAdvertencia.style.display = 'none';
+    escribirFraseCompleta();
+  });
+</script>
+
+</body>
+</html>

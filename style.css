@@ -1,0 +1,325 @@
+/* === Fondo galaxia negro tipo Vía Láctea con nebulosas, brillos y estrellas === */
+body, html {
+  min-height: 100vh;
+  font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
+  background: #080d13;
+  background-image:
+    /* Nebulosas y luces */
+    radial-gradient(ellipse at 60% 38%, #1a3874 0 8%, transparent 60%),
+    radial-gradient(ellipse at 62% 42%, #21d7f699 0 9%, transparent 32%),
+    radial-gradient(ellipse at 52% 58%, #d7c1f999 0 12%, transparent 32%),
+    radial-gradient(ellipse at 86% 68%, #6ef8c466 0 19%, transparent 45%),
+    radial-gradient(ellipse at 23% 68%, #bc31ea44 0 11%, transparent 45%),
+    linear-gradient(115deg, #0d0e15 0%, #0c1331 80%),
+    repeating-radial-gradient(circle, #fff9 0 1.4px, transparent 2.6px),
+    repeating-radial-gradient(circle, #ffe 0 0.95px, transparent 2px);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow-x: hidden;
+  color: #f5f7fe;
+  font-size: 1.08rem;
+  line-height: 1.6;
+  transition: background 0.5s ease;
+}
+
+/* Brillos y destellos de galaxia */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 55% 39%, #fff8 0 7%, transparent 40%),
+    radial-gradient(circle at 80% 30%, #cbdae9ad 0 4%, transparent 38%),
+    radial-gradient(circle at 27% 53%, #82eeff55 0 4.5%, transparent 28%);
+  opacity: 0.38;
+  animation: shinesGal 14s linear infinite alternate;
+  transition: opacity 0.4s;
+}
+@keyframes shinesGal {
+  0%   { opacity: 0.24; filter: blur(0.7px);}
+  35%  { opacity: 0.46; filter: blur(9px);}
+  63%  { opacity: 0.31; }
+  100% { opacity: 0.38; filter: blur(2px);}
+}
+
+/* Estrellas pequeñas animadas */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="23" cy="33" r="1.6" fill="white" opacity="0.44"/><circle cx="122" cy="22" r="1.0" fill="white" opacity="0.28"/><circle cx="210" cy="150" r="1" fill="white" opacity="0.32"/><circle cx="115" cy="190" r="1.1" fill="white" opacity="0.56"/><circle cx="350" cy="132" r="1.4" fill="white" opacity="0.43"/><circle cx="305" cy="380" r="1.2" fill="white" opacity="0.36"/><circle cx="455" cy="237" r="1.1" fill="white" opacity="0.41"/><circle cx="88" cy="82" r="1.1" fill="white" opacity="0.38"/><circle cx="500" cy="40" r="1.35" fill="white" opacity="0.46"/></svg>');
+  background-repeat: repeat;
+  animation: star_twinkle_galaxy 13s linear infinite;
+}
+@keyframes star_twinkle_galaxy {
+  0%,100% { opacity: 0.54;}
+  35% { opacity: 0.56;}
+  53% { opacity: 0.79;}
+  73% { opacity: 0.49;}
+  91% { opacity: 0.83;}
+}
+
+/* ================= Contenedores principales transparentes y legibles ================= */
+.container, .card, .special-card {
+  background: rgba(22,25,44,0.28);
+  backdrop-filter: blur(7px) saturate(168%);
+  border-radius: 22px;
+  box-shadow: 0 8px 34px 0 #000a2b52;
+  padding: 2.5rem 2.2rem;
+  margin: 2.3rem auto 2.6rem auto;
+  max-width: 600px;
+  min-width: 280px;
+  z-index: 2;
+  position: relative;
+  border: 2px solid #2734ff1f;
+  color: #fbf7fa;
+  overflow: hidden;
+}
+
+/* ================= Títulos con Glow neón azul-verde ================= */
+h1, h2, h3 {
+  color: #fafdff;
+  font-weight: 900;
+  text-shadow: 
+    0 2px 18px #6dfff3b2,
+    0 1px 9px #6c5cffc0,
+    0 6px 40px #11e7edc0;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  animation: neonGlow 2.8s ease-in-out infinite alternate;
+  z-index: 2;
+  position: relative;
+}
+@keyframes neonGlow {
+  0% { text-shadow: 0 2px 16px #38fff4a2, 0 1px 6px #00e2fe85;}
+  100% { text-shadow: 0 7px 38px #e5e5ffaa, 0 1px 10px #40fa8f, 0 10px 24px #2ae9e7cc;}
+}
+
+/* ================= Botones neón vibrantes ================= */
+button, .boton {
+  background: linear-gradient(90deg, #11f1ff 10%, #987bff 70%, #31ff93 100%);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 44px;
+  font-size: 1.13rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin: 0.8em 0;
+  box-shadow: 0 1.5px 20px #67e3ff8c, 0 2px 15px #689cff5d;
+  cursor: pointer;
+  position: relative;
+  transition: 
+    transform 0.18s,
+    box-shadow 0.28s, 
+    background 0.28s, 
+    filter 0.23s;
+  overflow: hidden;
+  outline: none;
+}
+button:hover, .boton:hover, button:focus, .boton:focus {
+  background: linear-gradient(102deg, #31ff93 0%, #4976ff 74%, #fff 100%);
+  color: #0a070a;
+  transform: scale(1.06) rotate(-2deg);
+  box-shadow: 0 8px 38px #0df9ffe5, 0 2.5px 24px #897affc2;
+  filter: brightness(1.15) drop-shadow(0 0 6px #5affcd99);
+}
+
+/* ================= Inputs y selects con estilo neón ================= */
+input[type="text"], input[type="number"], input[type="email"], textarea, select {
+  width: 100%;
+  padding: 13px 16px;
+  border: 2px solid #74eaffc9;
+  border-radius: 13px;
+  font-size: 1rem;
+  background: rgba(28,33,58,0.36);
+  color: #f1fcff;
+  margin-bottom: 15px;
+  outline: none;
+  box-shadow: 0 1px 10px #38fff4bd;
+  transition: border-color 0.29s, box-shadow 0.18s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: #40fae5;
+  box-shadow: 0 2px 16px #6dfff3a1;
+}
+
+/* ==== Carta Misteriosa y juegos con texto negro y fondo claro translúcido ==== */
+.carta-misteriosa, .vf-card, .juego-card, .juego-block {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #000 !important;
+  border-radius: 16px;
+  padding: 2.2em 1.7em;
+  box-shadow: 0 3px 24px rgba(0,0,0,0.12);
+  margin: 19px auto 32px auto;
+  max-width: 520px;
+  font-size: 1.21em;
+  backdrop-filter: none;
+  position: relative;
+  user-select: text;
+}
+.carta-misteriosa h3,
+.vf-card h3,
+.juego-block h3 {
+  color: #222 !important;
+  text-shadow: none !important;
+}
+.carta-misteriosa p,
+.vf-card p,
+.juego-block p,
+.vf-card ul,
+.vf-card li {
+  color: #000 !important;
+  text-shadow: none !important;
+}
+
+/* ==== Buzón Oculto con fondo claro y texto negro ==== */
+.buzon-oculto {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #000 !important;
+  border-radius: 16px;
+  padding: 2em 1.8em;
+  box-shadow: 0 3px 20px rgba(17, 26, 31, 0.25);
+  margin: 20px auto 30px auto;
+  max-width: 520px;
+  font-size: 1.2em;
+  user-select: text;
+}
+.buzon-oculto h3, .buzon-oculto h4 {
+  color: #222 !important;
+  text-shadow: none !important;
+}
+.buzon-oculto p, .buzon-oculto li {
+  color: #000 !important;
+  text-shadow: none !important;
+}
+
+/* === Tablas, listas, mensajes === */
+ul, ol {
+  margin-left: 1.6em;
+  margin-top: 11px;
+  margin-bottom: 15px;
+  color: #000;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+  animation: fadeFadeInUp 1s both;
+}
+@keyframes fadeFadeInUp {
+  from { transform: translateY(20px); opacity: 0;}
+  to   { transform: translateY(0); opacity: 1;}
+}
+
+.error, .success {
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  margin: 10px 0 0 0;
+  font-size: 1em;
+  letter-spacing: 1px;
+  box-shadow: 0 1.5px 8px #00fcd4a4;
+}
+.error {
+  color: #ff686e;
+  background: linear-gradient(90deg, #392057e2 80%, #fa7bc7ad 100%);
+  border: 1.5px solid #fe31b0aa;
+  display: none;
+}
+.success {
+  color: #19cfc4;
+  background: linear-gradient(90deg, #151647ee 80%, #259bcddd 100%);
+  border: 1.5px solid #00ef90cc;
+  display: block;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0 12px 0;
+  background: rgba(255, 255, 255, 0.93);
+  border-radius: 13px;
+  overflow: hidden;
+  box-shadow: 0 3px 15px rgba(22, 245, 187, 0.34);
+}
+th, td {
+  padding: 14px 16px;
+  border-bottom: 1.2px solid #00fce599;
+  color: #2d223f;
+  text-align: left;
+  font-size: 1em;
+}
+th {
+  background: linear-gradient(90deg, #36fff1 0%, #b8bcff 100%);
+  color: #061c36;
+}
+
+/* === Corazón animado decorativo === */
+.heart-pulse {
+  color: #19e0e6;
+  font-size: 2.1em;
+  text-shadow: 0 2px 10px #b7fff9dd;
+  animation: heartbeat 1s infinite cubic-bezier(0.325,0.455,0.8,0.58);
+  margin: 10px auto;
+  display: block;
+  width: fit-content;
+}
+@keyframes heartbeat {
+  0% { transform: scale(1);}
+  13% { transform: scale(1.18);}
+  24% { transform: scale(1);}
+  44% { transform: scale(1.10);}
+  54% { transform: scale(1);}
+  100%{ transform: scale(1);}
+}
+
+/* === Enlaces con efecto neón === */
+a {
+  color: #31f7ff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.18s, text-shadow 0.21s;
+}
+a:hover {
+  color: #fff;
+  text-shadow: 0 0 8px #21f7e4cc;
+}
+
+/* === Placeholders y scrollbars personalizados === */
+::-webkit-input-placeholder { color: #51c1ff; opacity: 0.81; }
+::-moz-placeholder { color: #51c1ff; opacity: 0.81; }
+:-ms-input-placeholder { color: #51c1ff; opacity: 0.81; }
+::placeholder { color: #51c1ff; opacity: 0.81; }
+
+::-webkit-scrollbar {
+  width: 9px;
+  background: #dbefff;
+}
+::-webkit-scrollbar-thumb {
+  background: #0586ff;
+  border-radius: 7px;
+}
+
+/* === Animaciones simples para bloques y texto === */
+.fade-in { animation: fadeIn 1s ease forwards; }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.slide-in-up { animation: slideInUp 1s ease forwards; }
+@keyframes slideInUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* === Responsive para móviles y pantallas pequeñas === */
+@media (max-width: 700px) {
+  .container, .card, .special-card {
+    padding: 14px 3vw;
+    max-width: 99vw;
+    font-size: 1.05em;
+  }
+  #frase, h1, h2 { font-size: 2em !important; }
+}

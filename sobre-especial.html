@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sobre especial</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Fondo con destellos de estrellas */
+    body {
+      position: relative;
+      background: #080d13;
+      color: #f5f7fe;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 2rem 1rem 4rem 1rem;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Contenedor central */
+    #seleccionEstado {
+      max-width: 480px;
+      margin: 0 auto;
+      background: rgba(22, 25, 44, 0.4);
+      padding: 24px 28px 32px 28px;
+      border-radius: 18px;
+      box-shadow: 0 0 38px #31ff933a;
+      text-align: center;
+      user-select: none;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Títulos y texto */
+    h1 {
+      text-align: center;
+      font-weight: 900;
+      font-size: 2.8rem;
+      margin-bottom: 32px;
+      color: #31f7ff;
+      text-shadow:
+        0 0 12px #31f7ffaa,
+        0 0 24px #00fffccc;
+    }
+
+    p {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      color: #d3eefc;
+      text-shadow: 0 0 5px #31f7ff66;
+    }
+
+    /* Botones con resplandor neón y animación */
+    button {
+      background: linear-gradient(90deg, #11f1ff 10%, #987bff 70%, #31ff93 100%);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 14px 42px;
+      font-size: 1.12rem;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      margin: 0.9em 0.4em 0 0.4em;
+      box-shadow: 0 2px 24px #31ff9955, 0 4px 30px #31ff9955;
+      cursor: pointer;
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.4s ease,
+        filter 0.3s ease;
+      position: relative;
+      user-select: none;
+      animation: neonPulse 3.6s infinite alternate ease-in-out;
+    }
+    button:hover, button:focus {
+      transform: scale(1.1);
+      box-shadow:
+        0 0 38px #31ff99cc,
+        0 0 46px #31ff99cc;
+      filter: brightness(1.28);
+      outline: none;
+    }
+
+    @keyframes neonPulse {
+      0% {
+        box-shadow: 0 2px 20px #31ff9955, 0 2px 28px #31ff9955;
+      }
+      100% {
+        box-shadow: 0 0 38px #31ff99bb, 0 0 48px #31ff99bb;
+      }
+    }
+
+    /* Contenedor mensaje especial */
+    #mensajeEspecial {
+      max-width: 500px;
+      background: rgba(10, 14, 35, 0.86);
+      margin: 24px auto 12px auto;
+      padding: 22px 26px 28px 26px;
+      border-radius: 20px;
+      color: #dfffff;
+      box-shadow: 0 0 20px #18fffba6;
+      font-size: 1.12rem;
+      line-height: 1.5;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Recordatorio estilo */
+    #recordatorio {
+      max-width: 360px;
+      margin: 26px auto 0 auto;
+      font-style: italic;
+      font-size: 1rem;
+      color: #66b5d4;
+      text-align: center;
+      user-select: none;
+      text-shadow: 0 0 6px #329ecbaa;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Animación pulso abrazo, reutilizable */
+    #abrazoAnimado {
+      font-size: 3rem;
+      text-align: center;
+      margin-top: 15px;
+      animation: pulso 1s infinite alternate;
+      user-select: none;
+      color: #ff1493;
+      text-shadow:
+        0 0 14px #ff1493cc,
+        0 0 25px #ff69b466;
+    }
+    @keyframes pulso {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.3); }
+    }
+
+    /* Contenedor para efectos decorativos */
+    .decoracion-flotante {
+      position: fixed;
+      pointer-events: none;
+      user-select: none;
+      z-index: 5;
+    }
+
+    /* Corazones flotantes neón */
+    .corazon-flotante {
+      color: #ff69b4;
+      font-size: 1.7rem;
+      text-shadow:
+        0 0 8px #ff1493,
+        0 0 12px #ff69b4;
+      animation: flotarCorazon 5s infinite ease-in-out;
+    }
+    .corazon1 {
+      top: 30%;
+      left: 15%;
+      animation-delay: 0s;
+    }
+    .corazon2 {
+      top: 65%;
+      right: 12%;
+      animation-delay: 2.3s;
+      animation-duration: 6s;
+    }
+    .corazon3 {
+      top: 50%;
+      left: 78%;
+      animation-delay: 1.1s;
+      animation-duration: 4.8s;
+    }
+
+    @keyframes flotarCorazon {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
+      50% { transform: translateY(10px) scale(1.15); opacity: 1; }
+    }
+
+    /* Destellos de estrellas */
+    .destello {
+      position: fixed;
+      background: #31f7ff;
+      border-radius: 50%;
+      filter: drop-shadow(0 0 6px #31f7ffcc);
+      opacity: 0.7;
+      animation: brillar 7s linear infinite;
+      mix-blend-mode: screen;
+      z-index: 3;
+    }
+    .destello1 {
+      width: 12px; height: 12px;
+      top: 20%;
+      left: 42%;
+      animation-delay: 0s;
+    }
+    .destello2 {
+      width: 8px; height: 8px;
+      top: 75%;
+      left: 68%;
+      animation-delay: 2s;
+      animation-duration: 9s;
+    }
+    .destello3 {
+      width: 10px; height: 10px;
+      top: 38%;
+      left: 75%;
+      animation-delay: 4s;
+      animation-duration: 8.2s;
+    }
+    .destello4 {
+      width: 6px; height: 6px;
+      top: 55%;
+      left: 30%;
+      animation-delay: 6s;
+      animation-duration: 10s;
+    }
+
+    @keyframes brillar {
+      0%, 100% { opacity: 0.5; filter: drop-shadow(0 0 6px #31f7ffcc); transform: scale(1); }
+      50% { opacity: 1; filter: drop-shadow(0 0 18px #31f7ffcc); transform: scale(1.3); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Sobre especial ✉️</h1>
+
+  <div id="seleccionEstado">
+    <p>¿Cómo se siente hoy?</p>
+    <button onclick="mostrarMensaje('feliz')">Feliz 😊</button>
+    <button onclick="mostrarMensaje('triste')">Triste 😢</button>
+    <button onclick="mostrarMensaje('enojada')">Enojada 😠</button>
+    <button onclick="mostrarMensaje('miedo')">Con miedo 😱</button>
+  </div>
+
+  <div id="mensajeEspecial" style="display: none; margin-top: 24px;"></div>
+  <div id="recordatorio" style="display: none;">
+    Recuerde que también debe dormir 8 hrs mínimo pequeña
+  </div>
+
+  <!-- Corazones flotantes de fondo -->
+  <div class="decoracion-flotante corazon-flotante corazon1">💖</div>
+  <div class="decoracion-flotante corazon-flotante corazon2">💗</div>
+  <div class="decoracion-flotante corazon-flotante corazon3">💜</div>
+
+  <!-- Destellos -->
+  <div class="destello destello1"></div>
+  <div class="destello destello2"></div>
+  <div class="destello destello3"></div>
+  <div class="destello destello4"></div>
+
+  <script>
+    function mostrarMensaje(estado) {
+      var mensajes = {
+        feliz: `<strong>¡Me alegra que esté feliz!</strong><br>
+                Espero que este día esté llenísimo de buenos momentos y recuerdos, y que nunca le falte una razón para sonreír.<br>
+                Gracias por compartir su alegría conmigo. 🫶`,
+
+        triste: `<strong>Si está triste, aquí tiene un abrazo virtual.</strong><br>
+                 Recuerde que no importa lo difícil que parezca, se que tiene una fuerza increible que ha superado mucho antes, estar triste es una parte del camino, respire pequeña siga paso a paso y mientras tanto aquí estoy yo, en silencio y no importa estaré aqui si.<br>
+                 Es fuerte, valiosa y merece la luz del mundo, recuerde que una estrella especial en el cielo acompaña.`,
+
+        enojada: `<strong>No pasa nada si se siente enojada.</strong><br>
+                  Tómese un momento para respirar y recordar que siempre puede contar conmigo para desahogarse o reír un rato aunque a veces también se moleste conmigo jsja.<br>
+                  Espero que poco a poco la calma y la ternura regresen a su día pequeña. 💛`,
+
+        miedo: `<strong>Si tiene miedo, no está sola.</strong><br>
+                Estoy aquí para escucharla, apoyarla y recordarle que es más valiente de lo que cree Jennifer, no tiene que vencerlo todo en un día recuerde que lo importante es dar el primer paso .<br>
+                Confíe en ud, y juntos todo es más fácil. ✨`
+      };
+
+      var abrazos = {
+        feliz: "¡🤗 Abráceme rápido para contagiar esa felicidad! 🤗",
+        triste: "🤗 Un abrazo cálido solo para ud, pequeña guerrera. 🤗",
+        enojada: "😤😤 ¡Ajá! ¡Un abrazo para calmar ese enojo! 😤😤",
+        miedo: "🌟🤗 Aquí tiene un abrazo valiente y luminoso. 🌟🤗"
+      };
+
+      document.getElementById("seleccionEstado").style.display = "none";
+
+      document.getElementById("mensajeEspecial").innerHTML = mensajes[estado] +
+        `<div style="margin-top:20px;">
+          <button id="btnAbrazo" onclick="darAbrazo('${estado}')">${abrazos[estado]}</button>
+          <br>
+          <button style="margin-top:15px;" onclick="volver()">Volver a elegir estado</button>
+        </div>`;
+
+      document.getElementById("mensajeEspecial").style.display = "block";
+      document.getElementById("recordatorio").style.display = "block";
+    }
+
+    function darAbrazo(estado) {
+      const btn = document.getElementById("btnAbrazo");
+
+      const respuestaAbrazo = {
+        feliz: "😁 ¡Su alegría es contagiosa! ¡Sonría siempre así! 😄🌞",
+        triste: "🌈 Aquí está un arcoíris para iluminar su día pequeña. 🌦️✨",
+        enojada: "🔥 Respire hondo, el enojo se va con un abrazo fuerte. 🧘‍♀️💖",
+        miedo: "💪 Ud es muy fuerte y valiente, cada abrazo la hace gigante señorita. 🌟👑"
+      };
+
+      btn.textContent = respuestaAbrazo[estado];
+
+      let animDiv = document.createElement("div");
+      animDiv.id = "abrazoAnimado";
+
+      switch(estado) {
+        case 'feliz': animDiv.textContent = "🎉🎈🎊"; break;
+        case 'triste': animDiv.textContent = "💖✨🌈"; break;
+        case 'enojada': animDiv.textContent = "🔥🔥💥"; break;
+        case 'miedo': animDiv.textContent = "🌟🛡️🦸‍♀️"; break;
+      }
+
+      const mensajeEspecial = document.getElementById("mensajeEspecial");
+      let existente = document.getElementById("abrazoAnimado");
+      if (existente) {
+        existente.replaceWith(animDiv);
+      } else {
+        mensajeEspecial.appendChild(animDiv);
+      }
+
+      btn.disabled = true;
+    }
+
+    function volver() {
+      document.getElementById("mensajeEspecial").style.display = "none";
+      document.getElementById("seleccionEstado").style.display = "block";
+      document.getElementById("recordatorio").style.display = "none";
+    }
+  </script>
+</body>
+</html>

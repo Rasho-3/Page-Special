@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="style.css" />
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carta misteriosa</title>
+  <style>
+    #cartaOculta {
+      letter-spacing: 0.2em;
+      font-size: 1.25rem;
+      color: transparent;
+      background: repeating-linear-gradient(90deg,#111 1px,#fff 2px,#fff 14px,#111 15px);
+      background-clip: text;
+      -webkit-background-clip: text;
+      user-select: none;
+      margin: 25px 0;
+      transition: color 1s;
+      text-align: center;
+      min-height: 4em;
+    }
+    #cartaRevelada {
+      font-size: 1.22rem;
+      color: #07070c; /* negro profundo */
+      margin-top: 20px;
+      text-align: center;
+      line-height: 1.5;
+      display: none;
+      /* Efecto neón oscuro / negro con brillo celeste */
+      text-shadow:
+        0 0 1.5px #00f0ff,
+        0 0 4px #00f6ff44,
+        0 0 8px #31f7ff99,
+        0 0 14px #31f7ffc2,
+        0 1.5px 3px #fff;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+    }
+    #avisos {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #555;
+      min-height: 1.5em;
+    }
+    button {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #f8e2ff;
+      border: 2px solid #ae8fbd;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:active {
+      background: #e9c7fa;
+    }
+  </style>
+</head>
+<body>
+  <h1>Carta misteriosa 🕵️‍♀️</h1>
+
+  <div id="cartaOculta">
+    ✨ ㅤＨⒺ𝑦 𝓽 сря𝒊𝒏𝑔 … ¿r𝑒𝒶𝓁𝓂𝑒𝓃𝓉𝑒 𝑞𝓊𝒾𝑒𝓇𝑒 𝒍𝑒𝑒𝓇 𝑒𝓈𝓉𝑜 ?✨ 
+  </div>
+
+  <div id="avisos"></div>
+
+  <button id="btnRevelar" onclick="revelarCarta()">Revelar mensaje secreto</button>
+
+  <div id="cartaRevelada">
+    Princesa Jennifer,<br><br>
+    La curiosidad es el principio y ambos sabemos que cierta personita es muy curiosa. Hoy tiene en sus manos una carta misteriosa,<br> pero lo más misterioso y especial de todo es ud para mi.<br>
+    Gracias por su risa, sus berrinches, enojos, por los shows que hemos hecho, las veces que me lleva la contraria, cuando se ha quedado dormida, y su forma de mirar el mundo, recuerde que ud tiene poderes mágicos.<br>
+    Espero que esta carta le saque una sonrisa y  recuerde lo mucho que la aprecio princesa. Hata el próximo mensaje secreto<br>
+    <br>
+    Con cariño,<br>
+    Su loco favorito jsja
+  </div>
+
+  <script>
+    function revelarCarta() {
+      const avisos = ["Segura", "100% segura", "Lista..."];
+      const avisosDiv = document.getElementById("avisos");
+      const cartaOculta = document.getElementById("cartaOculta");
+      const cartaRevelada = document.getElementById("cartaRevelada");
+      const btn = document.getElementById("btnRevelar");
+
+      // Deshabilitar botón para evitar clics repetidos
+      btn.disabled = true;
+
+      cartaOculta.style.display = "none";
+      avisosDiv.textContent = "";
+
+      let i = 0;
+
+      function mostrarSiguienteAviso() {
+        if (i < avisos.length) {
+          avisosDiv.textContent = avisos[i];
+          i++;
+          setTimeout(mostrarSiguienteAviso, 1000); // 1 segundo entre avisos
+        } else {
+          avisosDiv.textContent = "";
+          cartaRevelada.style.display = "block";
+          btn.style.display = "none"; // oculta el botón después de revelar
+        }
+      }
+
+      mostrarSiguienteAviso();
+    }
+  </script>
+</body>
+</html>

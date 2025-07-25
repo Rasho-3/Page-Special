@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Juegos Especiales</title>
+  <style>
+    /* === Fondo base oscuro tipo galaxia con gradientes y nebulosas === */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(ellipse at center, #050914 0%, #000212 70%),
+        radial-gradient(circle at 20% 30%, #11224f33 0%, transparent 70%),
+        radial-gradient(circle at 80% 70%, #3a1a6b44 0%, transparent 75%),
+        radial-gradient(circle at 75% 20%, #2b607833 0%, transparent 65%);
+      background-repeat: no-repeat;
+      background-size: cover;
+      color: #f0faff;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 2rem 4rem 2rem;
+      overflow-x: hidden;
+      position: relative;
+      user-select: none;
+    }
+
+    /* --- Halo neón central apenas visible --- */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 50%; left: 50%;
+      width: 600px; height: 600px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      border-radius: 50%;
+      background: radial-gradient(circle, #31f7ff33 0%, transparent 65%);
+      filter: blur(110px);
+      z-index: 0;
+      animation: haloPulse 10s ease-in-out infinite alternate;
+    }
+    @keyframes haloPulse {
+      0%, 100% { opacity: 0.22; }
+      50% { opacity: 0.44; }
+    }
+
+    /* === Más estrellas dispersas con parpadeo y brillo multitono === */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><circle cx="20" cy="20" r="1.8" fill="white" opacity="0.42"/><circle cx="60" cy="150" r="1.2" fill="white" opacity="0.56"/><circle cx="180" cy="50" r="1.1" fill="white" opacity="0.38"/><circle cx="110" cy="190" r="1.5" fill="white" opacity="0.44"/><circle cx="90" cy="90" r="1.8" fill="white" opacity="0.52"/></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="33" cy="33" r="1.6" fill="white" opacity="0.25"/><circle cx="50" cy="50" r="1" fill="white" opacity="0.3"/><circle cx="10" cy="90" r="1.2" fill="white" opacity="0.28"/></svg>'),
+        linear-gradient(180deg, #04070c 0%, transparent 90%);
+      background-repeat: repeat, repeat, no-repeat;
+      background-size: 200px 200px, 100px 100px, 100% 100%;
+      animation: multiTwinkle 15s ease-in-out infinite alternate;
+      opacity: 0.68;
+      filter: drop-shadow(0 0 6px #76b6fbcc);
+      z-index: 0;
+      mix-blend-mode: screen;
+    }
+    @keyframes multiTwinkle {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    /* === Títulos neón con glow === */
+    h1 {
+      margin-bottom: 40px;
+      font-weight: 900;
+      font-size: 2.4rem;
+      color: #7cf0ff;
+      text-shadow:
+        0 0 10px #1de9fc,
+        0 0 20px #1de9fc,
+        0 0 30px #1de9fc;
+      position: relative;
+      z-index: 2;
+      user-select: none;
+    }
+
+    /* === Botones con animación glow adicional === */
+    button {
+      background: linear-gradient(90deg, #11f1ff 10%, #987bff 70%, #31ff93 100%);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 15px 44px;
+      font-size: 1.13rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin: 0.8em 0;
+      box-shadow:
+        0 1.5px 20px #67e3ff8c,
+        0 2px 15px #689cff5d,
+        inset 0 0 8px #7affff66;
+      cursor: pointer;
+      transition:
+        transform 0.18s,
+        box-shadow 0.28s,
+        background 0.28s,
+        filter 0.23s;
+      outline: none;
+      width: 260px;
+      position: relative;
+      z-index: 2;
+      user-select: none;
+      animation: buttonGlow 6s infinite alternate ease-in-out;
+    }
+    button:hover, button:focus {
+      background: linear-gradient(102deg, #31ff93 0%, #4976ff 74%, #fff 100%);
+      color: #0a070a;
+      transform: scale(1.06) rotate(-2deg);
+      box-shadow:
+        0 8px 38px #0df9ffe5,
+        0 2.5px 24px #897affc2,
+        inset 0 0 14px #69fffdbb;
+      filter: brightness(1.15) drop-shadow(0 0 6px #5affcd99);
+      animation-play-state: paused;
+      outline: none;
+    }
+    @keyframes buttonGlow {
+      0%, 100% {
+        box-shadow:
+          0 1.5px 20px #67e3ff8c,
+          0 2px 15px #689cff5d,
+          inset 0 0 8px #7affff66;
+      }
+      50% {
+        box-shadow:
+          0 5px 32px #31f7ffcc,
+          0 6px 20px #42b9ffcc,
+          inset 0 0 18px #4efaffaa;
+      }
+    }
+
+    /* === Contenedor solar-system con mejora visual === */
+    .solar-system {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 40px auto 60px auto;
+      background: radial-gradient(ellipse at center, #050914 0%, #000212 90%);
+      border-radius: 50%;
+      box-shadow:
+        0 0 50px #0ff4f7cc inset,
+        0 0 32px #00dfffbb inset,
+        0 0 24px #31f7ffcc;
+      z-index: 1;
+      user-select: none;
+    }
+
+    /* Sol mejorado */
+    .sun {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 60px; height: 60px;
+      margin: -30px 0 0 -30px;
+      background: radial-gradient(circle, #ffaa00, #ff5500);
+      border-radius: 50%;
+      box-shadow:
+        0 0 35px #ffbb33,
+        0 0 90px #ff5500dd;
+      filter: drop-shadow(0 0 18px #ff9900ff);
+      z-index: 3;
+    }
+
+    /* Órbitas con sombra sutil */
+    .orbit {
+      position: absolute;
+      top: 50%; left: 50%;
+      border: 1.8px solid rgba(255, 255, 255, 0.22);
+      border-radius: 50%;
+      transform-origin: center center;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      box-shadow: 0 0 8px #62eaff44;
+      user-select: none;
+    }
+
+    .orbit-mercury {
+      width: 90px; height: 90px;
+      margin: -45px 0 0 -45px;
+      animation-name: rotateOrbit;
+      animation-duration: 8.4s;
+    }
+    .orbit-venus {
+      width: 140px; height: 140px;
+      margin: -70px 0 0 -70px;
+      animation-name: rotateOrbit;
+      animation-duration: 15s;
+    }
+    .orbit-earth {
+      width: 190px; height: 190px;
+      margin: -95px 0 0 -95px;
+      animation-name: rotateOrbitReverse;
+      animation-duration: 24s;
+    }
+    .orbit-mars {
+      width: 240px; height: 240px;
+      margin: -120px 0 0 -120px;
+      animation-name: rotateOrbit;
+      animation-duration: 46s;
+    }
+
+    @keyframes rotateOrbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rotateOrbitReverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+
+    /* Planetas con glow y suaves animaciones */
+    .planet {
+      position: absolute;
+      top: 50%; left: 50%;
+      border-radius: 50%;
+      box-shadow:
+        0 0 11px 4px currentColor,
+        0 0 25px 9px currentColor;
+      filter: drop-shadow(0 0 7px currentColor);
+      cursor: default;
+      user-select: none;
+      transition: transform 0.3s ease;
+    }
+    .planet:hover {
+      transform: scale(1.18);
+      filter: drop-shadow(0 0 18px currentColor);
+      z-index: 5;
+    }
+
+    .mercury {
+      width: 12px; height: 12px;
+      margin: -6px 0 0 -45px;
+      background: #aaa9ad;
+      color: #bfc1c7;
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+
+    .venus {
+      width: 18px; height: 18px;
+      margin: -9px 0 0 -70px;
+      background: #ecb24e;
+      color: #ffd23f;
+      animation: pulseGlow 2.2s infinite ease-in-out;
+    }
+
+    .earth {
+      width: 20px; height: 20px;
+      margin: -10px 0 0 -95px;
+      background: #2a4d7c;
+      color: #3ab7ff;
+      animation: pulseGlow 3.8s infinite ease-in-out;
+    }
+
+    .mars {
+      width: 16px; height: 16px;
+      margin: -8px 0 0 -120px;
+      background: #b94e41;
+      color: #ff8662;
+      animation: pulseGlow 4.6s infinite ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow:
+          0 0 9px 4px currentColor,
+          0 0 23px 7px currentColor;
+        filter: drop-shadow(0 0 7px currentColor);
+      }
+      50% {
+        box-shadow:
+          0 0 17px 9px currentColor,
+          0 0 35px 16px currentColor;
+        filter: drop-shadow(0 0 15px currentColor);
+      }
+    }
+
+    /* Destellos flotantes adicionales en el fondo */
+    .star-flash {
+      position: absolute;
+      border-radius: 50%;
+      background: #9ff7ff;
+      filter: drop-shadow(0 0 6px #31f7ff99);
+      opacity: 0.8;
+      animation: starFlash 6s infinite alternate ease-in-out;
+      pointer-events: none;
+      z-index: 1;
+      user-select: none;
+    }
+    @keyframes starFlash {
+      0% {
+        transform: scale(1);
+        opacity: 0.4;
+        filter: drop-shadow(0 0 4px #3af1ffaa);
+      }
+      50% {
+        transform: scale(1.6);
+        opacity: 1;
+        filter: drop-shadow(0 0 10px #3af1ffee);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0.4;
+        filter: drop-shadow(0 0 4px #3af1ffaa);
+      }
+    }
+
+    /* Posiciones específicas para destellos */
+    .star-flash:nth-child(1) {
+      width: 10px;
+      height: 10px;
+      top: 15%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+    .star-flash:nth-child(2) {
+      width: 10px;
+      height: 10px;
+      top: 40%;
+      left: 60%;
+      animation-delay: 3s;
+    }
+    .star-flash:nth-child(3) {
+      width: 10px;
+      height: 10px;
+      top: 70%;
+      left: 35%;
+      animation-delay: 5s;
+    }
+    /* Agrega algunos más para más complejidad */
+    .star-flash.extra1 {
+      width: 8px;
+      height: 8px;
+      top: 25%;
+      left: 78%;
+      animation-delay: 1.5s;
+    }
+    .star-flash.extra2 {
+      width: 7px;
+      height: 7px;
+      top: 55%;
+      left: 10%;
+      animation-delay: 4s;
+    }
+    .star-flash.extra3 {
+      width: 12px;
+      height: 12px;
+      top: 85%;
+      left: 80%;
+      animation-delay: 2.2s;
+    }
+  </style>
+</head>
+<body>
+  <h1>Elija un juego o detalle</h1>
+
+  <button onclick="location.href='sobre-especial.html'">Sobre especial</button>
+  <button onclick="location.href='carta-misteriosa.html'">Carta Misteriosa</button>
+  <button onclick="location.href='buzon-oculto.html'">Buzón oculto</button>
+  <button onclick="location.href='verdadero-o-falso.html'">Verdadero o falso</button>
+  <button onclick="location.href='mensaje-especial.html'">Mensaje especial</button>
+
+  <!-- Animación planetaria -->
+  <div class="solar-system" aria-label="Animación de sistema solar y destellos" role="img">
+    <div class="sun"></div>
+    <div class="orbit orbit-mercury" aria-hidden="true">
+      <div class="planet mercury" title="Mercurio"></div>
+    </div>
+    <div class="orbit orbit-venus" aria-hidden="true">
+      <div class="planet venus" title="Venus"></div>
+    </div>
+    <div class="orbit orbit-earth" aria-hidden="true">
+      <div class="planet earth" title="Tierra"></div>
+    </div>
+    <div class="orbit orbit-mars" aria-hidden="true">
+      <div class="planet mars" title="Marte"></div>
+    </div>
+  </div>
+
+  <!-- Destellos flotantes adicionales -->
+  <div class="star-flash extra1"></div>
+  <div class="star-flash extra2"></div>
+  <div class="star-flash extra3"></div>
+
+</body>
+</html>

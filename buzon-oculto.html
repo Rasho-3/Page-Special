@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Buzón Oculto con Saludo y Animación</title>
+  <style>
+    /* Fondo oscuro suave y animado con destellos */
+    body {
+      font-family: Arial, sans-serif;
+      background: #080d13;
+      margin: 0;
+      padding: 2rem 1rem 4rem 1rem;
+      text-align: center;
+      color: #f5f7fe;
+      overflow-x: hidden;
+      position: relative;
+      user-select: none;
+    }
+
+    /* Destellos tipo estrellas flotantes */
+    .star {
+      position: fixed;
+      border-radius: 50%;
+      background: #31f7ff;
+      box-shadow: 0 0 8px #31f7ffaa;
+      animation: starPulse 5s ease-in-out infinite;
+      opacity: 0.7;
+      z-index: 0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    .star:nth-child(1) {
+      top: 10%;
+      left: 20%;
+      width: 14px; height: 14px;
+      animation-delay: 0s;
+    }
+    .star:nth-child(2) {
+      top: 30%;
+      left: 32%;
+      width: 9px; height: 9px;
+      animation-delay: 1.8s;
+    }
+    .star:nth-child(3) {
+      top: 55%;
+      left: 40%;
+      width: 11px; height: 11px;
+      animation-delay: 2.5s;
+    }
+    .star:nth-child(4) {
+      top: 80%;
+      left: 70%;
+      width: 7px; height: 7px;
+      animation-delay: 3.3s;
+    }
+    .star:nth-child(5) {
+      top: 60%;
+      left: 85%;
+      width: 12px; height: 12px;
+      animation-delay: 0.8s;
+    }
+
+    @keyframes starPulse {
+      0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+        box-shadow: 0 0 8px #31f7ffaa;
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.3);
+        box-shadow: 0 0 16px #31f7ffcc;
+      }
+    }
+
+    /* Contenedor principal del buzón */
+    #buzon {
+      background: rgba(22, 25, 44, 0.85);
+      display: inline-block;
+      margin: 40px auto;
+      padding: 30px 35px 50px 35px;
+      border-radius: 18px;
+      box-shadow: 0 0 32px #31ff9933 inset, 0 10px 40px #00f0ff70;
+      border: 2px solid #31f7ffcc;
+      max-width: 600px;
+      position: relative;
+      z-index: 10;
+
+      /* Texto con negro neón azul */
+      color: #d3f0ff;
+      text-shadow:
+        0 0 1.5px #00f0ff,
+        0 0 6px #31f7ffbb,
+        0 0 12px #00fffcc2;
+      user-select: text;
+    }
+
+    #saludoBienvenida {
+      font-size: 1.3em;
+      font-weight: 700;
+      margin-bottom: 24px;
+      min-height: 28px;
+      user-select: none;
+      letter-spacing: 0.04em;
+      text-shadow:
+        0 0 6px #30e6ff,
+        0 0 12px #32b9ffcc;
+    }
+
+    /* Textarea estilizado con fondo translúcido */
+    textarea {
+      width: 95%;
+      min-height: 100px;
+      font-size: 1.1em;
+      border-radius: 12px;
+      border: 2px solid #49acffbb;
+      padding: 10px 12px;
+      resize: vertical;
+      margin-bottom: 20px;
+      font-family: Arial, sans-serif;
+      background: rgba(100, 140, 180, 0.15);
+      color: #d3f0ff;
+      text-shadow: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #00eeffcc;
+      box-shadow: 0 0 18px #56e5ffcc;
+      background: rgba(100, 140, 180, 0.4);
+    }
+
+    /* Botones estilizados con neón adicional y animación pulsante */
+    button {
+      padding: 10px 25px;
+      background: linear-gradient(90deg, #11f1ff 10%, #4976ff 70%, #31ff93 100%);
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1em;
+      cursor: pointer;
+      margin: 6px 8px;
+      font-weight: 700;
+      color: #072228;
+      text-shadow:
+        0 0 3px #0ff2ffdd,
+        0 0 6px #00ccffcc;
+      box-shadow:
+        0 0 14px #00c5ffcc,
+        0 0 40px #00aaffcc;
+      transition: transform 0.25s ease, box-shadow 0.4s ease;
+      user-select: none;
+      position: relative;
+      z-index: 11;
+      filter: drop-shadow(0 0 6px #00cfffcc);
+      animation: neonPulse 3s infinite alternate ease-in-out;
+    }
+    button:hover, button:focus {
+      transform: scale(1.1) rotate(-2deg);
+      box-shadow:
+        0 0 26px #00eaffcc,
+        0 0 50px #00eaffcc;
+      filter: brightness(1.1);
+      outline: none;
+    }
+
+    @keyframes neonPulse {
+      from {
+        box-shadow: 0 0 14px #00c5ffcc, 0 0 40px #00aaffcc;
+      }
+      to {
+        box-shadow: 0 0 28px #00ebffff, 0 0 60px #00d7ffff;
+      }
+    }
+
+    /* Lista de mensajes con fondo translúcido y bordes redondeados */
+    #listaMensajes {
+      margin-top: 25px;
+      max-height: 280px;
+      overflow-y: auto;
+      background: rgba(18, 22, 38, 0.75);
+      border-radius: 14px;
+      padding: 20px 25px;
+      box-shadow: 0 0 14px #31b9ffcc;
+      text-align: left;
+      display: none;
+      font-family: Arial, sans-serif;
+
+      color: #c9e7ff;
+      text-shadow:
+        0 0 1.5px #00cfffbb,
+        0 0 3px #31a7ffbb;
+      user-select: text;
+      position: relative;
+      z-index: 10;
+    }
+    .mensaje {
+      border-bottom: 1px solid #3b66a4cc;
+      padding: 12px 0;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+    .mensaje:last-child {
+      border-bottom: none;
+    }
+    .fecha {
+      font-size: 0.85em;
+      color: #68afffcc;
+      margin-bottom: 6px;
+      text-shadow:
+        0 0 1px #00aaffbb,
+        0 0 2px #31aaffcc;
+      user-select: text;
+      font-style: italic;
+      letter-spacing: 0.03em;
+    }
+
+    /* Mensaje de éxito */
+    #exito {
+      font-weight: 700;
+      margin-top: 15px;
+      min-height: 24px;
+      color: #39ed4dcc;
+      text-shadow:
+        0 0 3px #38ff68cc,
+        0 0 8px #60ff91cc;
+      user-select: none;
+      transition: color 0.3s;
+      position: relative;
+      z-index: 11;
+    }
+
+    /* Animación del sobre */
+    #sobre {
+      position: absolute;
+      top: -70px;
+      right: 20px;
+      width: 60px;
+      height: 45px;
+      background: linear-gradient(135deg, #a97cca 40%, #743b9e 70%);
+      border-radius: 12px 12px 9px 9px;
+      box-shadow: 0 5px 14px rgba(170, 132, 217, 0.8);
+      cursor: default;
+      transform-origin: center bottom;
+      user-select: none;
+      z-index: 15;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    #sobre::after {
+      content: "";
+      position: absolute;
+      top: 14px; left: 10px; right: 10px;
+      height: 20px;
+      background: linear-gradient(45deg, transparent 40%, white 50%, transparent 60%);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      pointer-events: none;
+    }
+
+    @keyframes vueloSobre {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(-120px, -150px) scale(1.1) rotate(15deg);
+      }
+      75% {
+        opacity: 1;
+        transform: translate(-160px, -180px) scale(0.9) rotate(-10deg);
+      }
+      90% {
+        opacity: 1;
+        transform: translate(-190px, -210px) scale(1) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-190px, -210px) scale(1) rotate(0deg);
+      }
+    }
+    @keyframes cierreSobre {
+      0% {
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+      }
+      100% {
+        clip-path: polygon(0 0, 100% 0, 100% 0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Estrellas flotantes de fondo para detalle visual -->
+  <div class="star"></div>
+  <div class="star"></div>
+  <div class="star"></div>
+  <div class="star"></div>
+  <div class="star"></div>
+
+  <h1>Buzón Oculto 📬</h1>
+  <div id="buzon">
+    <div id="saludoBienvenida"></div>
+    <textarea id="mensaje" placeholder="Aquí puede escribirme lo que quiera pequeña..."></textarea><br>
+    <button onclick="guardarMensaje()">Guardar mensaje</button>
+    <button onclick="mostrarMensajes()">Ver mensajes guardados</button>
+    <div id="exito"></div>
+
+    <div id="listaMensajes"></div>
+
+    <div id="sobre"></div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'buzon_oculto_multimensajes';
+    const mensajeInput = document.getElementById('mensaje');
+    const listaMensajesDiv = document.getElementById('listaMensajes');
+    const exitoDiv = document.getElementById('exito');
+    const saludoDiv = document.getElementById('saludoBienvenida');
+    const sobreDiv = document.getElementById('sobre');
+
+    // Saludos aleatorios para la bienvenida
+    const saludos = [
+      "¡Hola, señorita berrinchuda! 💜",
+      "Bienvenida de nuevo, mi princesa 💫",
+      "Un besito para ud, pequeña 🌟",
+      "Hoy es un gran día para sonreír 😊",
+      "Su mensaje ilumina mi día 🌈",
+      "¡Gracias por pasar a decirme algo! 💌",
+      "¡Aquí estoy para escucharla siempre! 👂",
+      "Espero su mensaje princesa"
+    ];
+
+    // Mostrar saludo al cargar la página
+    function mostrarSaludo() {
+      const index = Math.floor(Math.random() * saludos.length);
+      saludoDiv.textContent = saludos[index];
+    }
+
+    mostrarSaludo();
+
+    // Guarda un nuevo mensaje junto con la fecha actual
+    function guardarMensaje() {
+      const texto = mensajeInput.value.trim();
+      if (!texto) {
+        exitoDiv.style.color = '#c6293a';
+        exitoDiv.textContent = "Por favor, escribe algo antes de guardar 😊";
+        return;
+      }
+
+      // Muestra animación del sobre
+      animarSobre();
+
+      let mensajes = obtenerMensajesActivos();
+
+      const nuevoMensaje = {
+        texto: texto,
+        guardadoEn: new Date().getTime()
+      };
+
+      mensajes.unshift(nuevoMensaje); // agregamos al inicio
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(mensajes));
+
+      exitoDiv.style.color = '#39ed4d';
+      exitoDiv.textContent = "¡Mensaje guardado! Será visible por 24 horas.";
+      mensajeInput.value = '';
+      // Oculta la lista para que refresque la próxima vez que se abra
+      listaMensajesDiv.style.display = 'none';
+      listaMensajesDiv.innerHTML = '';
+    }
+
+    // Obtiene solo mensajes con menos de 24 horas, eliminando expirados
+    function obtenerMensajesActivos() {
+      const ahora = new Date().getTime();
+      const unDiaMs = 24 * 60 * 60 * 1000;
+      let mensajes = [];
+
+      try {
+        const almacenados = localStorage.getItem(STORAGE_KEY);
+        if(almacenados) {
+          mensajes = JSON.parse(almacenados);
+          mensajes = mensajes.filter(m => (ahora - m.guardadoEn) < unDiaMs);
+          // Guardar la lista filtrada limpia de expirados
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(mensajes));
+        }
+      } catch(e) {
+        localStorage.removeItem(STORAGE_KEY);
+        mensajes = [];
+      }
+      return mensajes;
+    }
+
+    // Muestra en pantalla los mensajes actuales
+    function mostrarMensajes() {
+      const mensajes = obtenerMensajesActivos();
+      if(mensajes.length === 0) {
+        listaMensajesDiv.style.display = 'block';
+        listaMensajesDiv.innerHTML = "<p>No hay mensajes guardados en las últimas 24 horas.</p>";
+        return;
+      }
+
+      listaMensajesDiv.innerHTML = mensajes.map(m => `
+        <div class="mensaje">
+          <div class="fecha">${new Date(m.guardadoEn).toLocaleString()}</div>
+          <div>${escapeHtml(m.texto)}</div>
+        </div>
+      `).join('') + `<button onclick="cerrarMensajes()">Cerrar mensajes</button>`;
+      listaMensajesDiv.style.display = 'block';
+      exitoDiv.textContent = "";
+    }
+
+    // Función para cerrar la vista de mensajes
+    function cerrarMensajes() {
+      listaMensajesDiv.style.display = 'none';
+      listaMensajesDiv.innerHTML = '';
+    }
+
+    // Función simple para escapar HTML y prevenir inyección
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML.replace(/\n/g, "<br>");
+    }
+
+    // Animación del sobre al guardar mensaje
+    function animarSobre() {
+      sobreDiv.style.opacity = '1';
+      sobreDiv.style.pointerEvents = 'auto';
+      sobreDiv.style.transform = 'translate(0,0) scale(1) rotate(0deg)';
+      sobreDiv.style.animation = 'vueloSobre 2s forwards';
+
+      // Después de la animación de vuelo, animar cierre
+      setTimeout(() => {
+        sobreDiv.style.animation = '';
+        sobreDiv.style.clipPath = 'polygon(0 0, 100% 0, 50% 100%)'; // restablecer
+        // Animación cierre
+        sobreDiv.style.animation = 'cierreSobre 0.6s forwards';
+      }, 2000);
+
+      // Ocultar sobre después de la animación
+      setTimeout(() => {
+        sobreDiv.style.opacity = '0';
+        sobreDiv.style.pointerEvents = 'none';
+        sobreDiv.style.clipPath = 'polygon(0 0, 100% 0, 50% 100%)'; // para usar en próxima vez
+      }, 2600);
+    }
+
+    // Limpiar mensajes expirados al cargar página
+    window.addEventListener('DOMContentLoaded', () => {
+      obtenerMensajesActivos();
+    });
+  </script>
+</body>
+</html>
